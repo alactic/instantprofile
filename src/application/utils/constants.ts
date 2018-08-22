@@ -1,0 +1,11 @@
+ export const ModelName = 'UserModel';
+ export const AboutModelName = 'AboutMeModel';
+ export const ServiceModelName = 'ServiceModel';
+ export const SecreytKey = 'secretKey';
+ export const ClientModelName = 'ClientModel';
+ export const PortifolioModelName = 'PortifolioModel';
+ export const CategoryModelName = 'CategoryModel';
+ export const ContactModelName = 'ContactModel';
+ export const CloudinaryName = 'softloft';
+ export const CloudinaryKey = 314466682599661;
+ export const ContactModelSecret = 'o_fyN55i7DXY4lSt6a4QN2CpGH8';

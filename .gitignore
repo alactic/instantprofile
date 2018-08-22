@@ -1,0 +1,9 @@
+.idea/vcs.xml
+.idea/workspace.xml
+*.xml
+*.xml___jb_tmp___
+.idea
+node_modules
+node_modules/*
+.node_modules/*
+.vscode
