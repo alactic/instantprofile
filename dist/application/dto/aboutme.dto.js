@@ -49,6 +49,14 @@ __decorate([
     __metadata("design:type", String)
 ], CreateAboutMeDto.prototype, "about_me", void 0);
 __decorate([
+    swagger_1.ApiModelProperty(),
+    __metadata("design:type", String)
+], CreateAboutMeDto.prototype, "image_name", void 0);
+__decorate([
+    swagger_1.ApiModelProperty(),
+    __metadata("design:type", String)
+], CreateAboutMeDto.prototype, "image_id", void 0);
+__decorate([
     swagger_1.ApiModelProperty({ type: String, isArray: true }),
     __metadata("design:type", Object)
 ], CreateAboutMeDto.prototype, "hobby", void 0);

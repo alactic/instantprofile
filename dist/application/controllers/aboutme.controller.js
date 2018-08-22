@@ -20,6 +20,7 @@ const passport_1 = require("@nestjs/passport");
 const user_service_1 = require("../services/user.service");
 const path = require("path");
 const fs = require("fs");
+const cloudinary_upload_1 = require("../utils/cloudinary-upload");
 let AboutmeController = class AboutmeController {
     constructor(aboutmeService, userservice) {
         this.aboutmeService = aboutmeService;
@@ -44,14 +45,14 @@ let AboutmeController = class AboutmeController {
         });
     }
     updateProfileImage(files, res, req, createAboutMeDto) {
-        const name = Date.now() + '-' + files.originalname;
-        createAboutMeDto['profile_image'] = name;
-        const buff = new Buffer(files.buffer, 'base64');
-        fs.writeFileSync('./src/public/uploads/' + name, buff);
-        this.aboutmeService.updateProfileImage(createAboutMeDto, req.headers.authorization).then(response => {
-            res.send(response);
-        }).catch(error => {
-            res.status(400).send(error);
+        cloudinary_upload_1.cloud(files.buffer).then((result) => {
+            createAboutMeDto['image_name'] = result['url'];
+            createAboutMeDto['image_id'] = result['public_id'];
+            this.aboutmeService.updateProfileImage(createAboutMeDto, req.headers.authorization).then(response => {
+                res.send(response);
+            }).catch(error => {
+                res.status(400).send(error);
+            });
         });
     }
     updateUser(res, req, updateAboutMeDto) {

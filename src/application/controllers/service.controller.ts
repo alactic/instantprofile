@@ -22,7 +22,6 @@ export class ServiceController {
     @UseGuards(AuthGuard('jwt'))
     @UseInterceptors(FilesInterceptor('files'))
     createService(@UploadedFiles() files, @Body() createServiceDto: CreateServiceDto, @Res() res, @Req() req) {
-        console.log('files :: ', files);
         const servicedata = JSON.parse(createServiceDto['data']);
         if (servicedata.service.length === files.length) {
             let index = 0;

@@ -54,6 +54,14 @@ __decorate([
 ], CreateUserDto.prototype, "habit", void 0);
 __decorate([
     swagger_1.ApiModelProperty(),
+    __metadata("design:type", String)
+], CreateUserDto.prototype, "image_name", void 0);
+__decorate([
+    swagger_1.ApiModelProperty(),
+    __metadata("design:type", String)
+], CreateUserDto.prototype, "image_id", void 0);
+__decorate([
+    swagger_1.ApiModelProperty(),
     __metadata("design:type", Boolean)
 ], CreateUserDto.prototype, "activate", void 0);
 __decorate([

@@ -25,7 +25,6 @@ let ServiceController = class ServiceController {
         this.userservice = userservice;
     }
     createService(files, createServiceDto, res, req) {
-        console.log('files :: ', files);
         const servicedata = JSON.parse(createServiceDto['data']);
         if (servicedata.service.length === files.length) {
             let index = 0;

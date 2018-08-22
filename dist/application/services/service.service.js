@@ -26,6 +26,7 @@ const constants_1 = require("../utils/constants");
 const mongoose_1 = require("mongoose");
 const retrieveFromToken_1 = require("../utils/retrieveFromToken");
 const cloudinary = require("cloudinary");
+const cloudinary_upload_1 = require("../utils/cloudinary-upload");
 let ServiceService = class ServiceService {
     constructor(serviceModel) {
         this.serviceModel = serviceModel;
@@ -82,8 +83,10 @@ let ServiceService = class ServiceService {
             else {
                 service.service.forEach((value, i) => {
                     if (i === index) {
-                        cloudinary.v2.uploader.destroy(value['image_id'], (error, result) => {
-                            console.log('result :: ', result, 'error :: ', error);
+                        cloudinary_upload_1.deleteCloudFile(value['image_id']).then((result) => {
+                            console.log('result :: ', result);
+                        }).catch(error => {
+                            console.log('error :: ', error);
                         });
                         value['image_name'] = createServiceDto['image_name'];
                         value['image_id'] = createServiceDto['image_id'];

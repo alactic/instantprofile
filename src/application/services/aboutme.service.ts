@@ -5,6 +5,7 @@ import {Aboutme} from '../interfaces/aboutme.interface';
 import {CreateAboutMeDto, UpdateAboutMeDto} from '../dto/aboutme.dto';
 import {AboutModelName} from '../utils/constants';
 import * as fs from 'fs';
+import {deleteCloudFile} from "../utils/cloudinary-upload";
 
 @Injectable()
 export class AboutmeService {
@@ -15,7 +16,7 @@ export class AboutmeService {
         const decoded = retrieveFromToken(authorization);
         createAboutmeDto['userId'] = decoded._id;
         const user = await this.aboutModel.find({userId: decoded._id});
-        if (user && user.length > 0 ) {
+        if (user && user.length > 0) {
             const updatedUser = await this.aboutModel.findOneAndUpdate({userId: decoded._id}, {
                 $set: {
                     'profession': createAboutmeDto.profession,
@@ -42,7 +43,7 @@ export class AboutmeService {
         const decoded = retrieveFromToken(authorization);
         createAboutmeDto['userId'] = decoded._id;
         const user = await this.aboutModel.find({userId: decoded._id});
-        if (user && user.length > 0 ) {
+        if (user && user.length > 0) {
             const updatedUser = await this.aboutModel.findOneAndUpdate({userId: decoded._id}, {
                 $set: {
                     'cv': createAboutmeDto['cv'],
@@ -59,14 +60,16 @@ export class AboutmeService {
         const decoded = retrieveFromToken(authorization);
         createAboutmeDto['userId'] = decoded._id;
         const user = await this.aboutModel.find({userId: decoded._id});
-        if (user && user.length > 0 ) {
-            const path = './src/public/uploads/' + user['profile_image'];
-            if (fs.existsSync(path)) {
-                fs.unlinkSync('./src/public/uploads/' + user['profile_image']);
-            }
+        if (user && user.length > 0) {
+            deleteCloudFile(user['image_id']).then((result) => {
+                console.log('result :: ', result);
+            }).catch(error => {
+                console.log('error :: ', error);
+            });
             const updatedUser = await this.aboutModel.findOneAndUpdate({userId: decoded._id}, {
                 $set: {
-                    'profile_image': createAboutmeDto['profile_image'],
+                    'image_name': createAboutmeDto['image_name'],
+                    'image_id': createAboutmeDto['image_id'],
                 },
             }, {new: true});
             return updatedUser;
@@ -95,7 +98,7 @@ export class AboutmeService {
             }, {new: true});
             return updatedUser;
         } else {
-            throw new HttpException('User does not Exist',  HttpStatus.BAD_REQUEST);
+            throw new HttpException('User does not Exist', HttpStatus.BAD_REQUEST);
         }
     }
 

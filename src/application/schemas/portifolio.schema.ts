@@ -18,6 +18,9 @@ export const PortifolioSchema = new mongoose.Schema({
         image_name: {
             type: String,
         },
+        image_id: {
+            type: String,
+        },
     }],
 });
 

@@ -15,10 +15,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
 const passport_1 = require("@nestjs/passport");
 const swagger_1 = require("@nestjs/swagger");
-const fs = require("fs");
 const porttifolio_service_1 = require("../services/porttifolio.service");
 const portifolio_dto_1 = require("../dto/portifolio.dto");
 const user_service_1 = require("../services/user.service");
+const cloudinary_upload_1 = require("../utils/cloudinary-upload");
 let PortifolioController = class PortifolioController {
     constructor(porttifolioService, userservice) {
         this.porttifolioService = porttifolioService;
@@ -26,17 +26,20 @@ let PortifolioController = class PortifolioController {
     }
     createportifolio(files, createPortifolioDto, res, req) {
         const portifoliodata = JSON.parse(createPortifolioDto['data']);
-        portifoliodata.portifolio.forEach((value, i) => {
-            value['image_name'] = Date.now() + '-' + value['imageName'];
-        });
+        let index = 0;
         files.forEach((file, i) => {
-            const buff = new Buffer(file.buffer, 'base64');
-            fs.writeFileSync('./src/public/uploads/' + portifoliodata.portifolio[i]['image_name'], buff);
-        });
-        this.porttifolioService.create(portifoliodata, req.headers.authorization).then(response => {
-            res.send(response);
-        }).catch(error => {
-            res.status(400).send(error);
+            cloudinary_upload_1.cloud(file.buffer).then((result) => {
+                index = index + 1;
+                portifoliodata.portifolio[i]['image_name'] = result['url'];
+                portifoliodata.portifolio[i]['image_id'] = result['public_id'];
+                if (index === files.length) {
+                    this.porttifolioService.create(portifoliodata, req.headers.authorization).then(response => {
+                        res.send(response);
+                    }).catch(error => {
+                        res.status(400).send(error);
+                    });
+                }
+            });
         });
     }
     addCategory(addCategory, res, req) {
@@ -84,14 +87,14 @@ let PortifolioController = class PortifolioController {
         });
     }
     updateProfileImage(files, res, req, createPortifolioDto) {
-        const name = Date.now() + '-' + files.originalname;
-        createPortifolioDto['image'] = name;
-        const buff = new Buffer(files.buffer, 'base64');
-        fs.writeFileSync('./src/public/uploads/' + name, buff);
-        this.porttifolioService.updateImage(createPortifolioDto, req.headers.authorization).then(response => {
-            res.send(response);
-        }).catch(error => {
-            res.status(400).send(error);
+        cloudinary_upload_1.cloud(files.buffer).then((result) => {
+            createPortifolioDto['image_name'] = result['url'];
+            createPortifolioDto['image_id'] = result['public_id'];
+            this.porttifolioService.updateImage(createPortifolioDto, req.headers.authorization).then(response => {
+                res.send(response);
+            }).catch(error => {
+                res.status(400).send(error);
+            });
         });
     }
 };

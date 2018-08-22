@@ -32,6 +32,12 @@ export class CreateUserDto {
     readonly habit: string;
 
     @ApiModelProperty()
+     image_name: string;
+
+    @ApiModelProperty()
+     image_id: string;
+
+    @ApiModelProperty()
      activate: boolean;
 
     @ApiModelProperty()

@@ -28,6 +28,12 @@ export class CreateAboutMeDto {
     @ApiModelProperty()
     readonly about_me: string;
 
+    @ApiModelProperty()
+     image_name: string;
+
+    @ApiModelProperty()
+     image_id: string;
+
     @ApiModelProperty({type: String, isArray: true})
     readonly hobby: any;
 

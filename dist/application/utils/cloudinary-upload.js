@@ -14,4 +14,19 @@ exports.cloud = (files) => {
     });
     return promise;
 };
+exports.deleteCloudFile = (file_id) => {
+    console.log('file id :: ', file_id);
+    const promise = new Promise((resolve, reject) => {
+        cloudinary.uploader.destroy(file_id, (error, result) => {
+            console.log('result :: ', result, 'error :: ', error);
+            if (result) {
+                resolve(result);
+            }
+            if (error) {
+                reject(error);
+            }
+        });
+    });
+    return promise;
+};
 //# sourceMappingURL=cloudinary-upload.js.map

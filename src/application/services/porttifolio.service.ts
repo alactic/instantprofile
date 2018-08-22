@@ -7,6 +7,7 @@ import {Service} from '../interfaces/service.interface';
 import {retrieveFromToken} from '../utils/retrieveFromToken';
 import {Category, Portifolio} from '../interfaces/portifolio.interface';
 import {AddCategory, CreatePortifolioDto} from '../dto/portifolio.dto';
+import {deleteCloudFile} from "../utils/cloudinary-upload";
 
 @Injectable()
 export class PortifolioService {
@@ -75,13 +76,13 @@ export class PortifolioService {
         } else {
             portifolio.portifolio.forEach((value, i) => {
                 if (i === index) {
-                    const path = './src/public/uploads/' + value['image_name'];
-                    if (fs.existsSync(path)) {
-                        fs.unlinkSync('./src/public/uploads/' + value['image_name']);
-                        value['image_name'] = createPortfilioDto['image'];
-                    } else {
-                        value['image_name'] = createPortfilioDto['image'];
-                    }
+                    deleteCloudFile(value['image_id']).then((result) => {
+                        console.log('result :: ', result);
+                    }).catch(error => {
+                        console.log('error :: ', error);
+                    });
+                    value['image_name'] = createPortfilioDto['image_name'];
+                    value['image_id'] = createPortfilioDto['image_id'];
                 }
             });
             const updatedPortifilio = await this.portifolioModel.findOneAndUpdate({userId: decoded._id}, {

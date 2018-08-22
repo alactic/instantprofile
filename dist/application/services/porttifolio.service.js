@@ -24,8 +24,8 @@ var _a, _b;
 const common_1 = require("@nestjs/common");
 const constants_1 = require("../utils/constants");
 const mongoose_1 = require("mongoose");
-const fs = require("fs");
 const retrieveFromToken_1 = require("../utils/retrieveFromToken");
+const cloudinary_upload_1 = require("../utils/cloudinary-upload");
 let PortifolioService = class PortifolioService {
     constructor(portifolioModel, categoryModel) {
         this.portifolioModel = portifolioModel;
@@ -99,14 +99,13 @@ let PortifolioService = class PortifolioService {
             else {
                 portifolio.portifolio.forEach((value, i) => {
                     if (i === index) {
-                        const path = './src/public/uploads/' + value['image_name'];
-                        if (fs.existsSync(path)) {
-                            fs.unlinkSync('./src/public/uploads/' + value['image_name']);
-                            value['image_name'] = createPortfilioDto['image'];
-                        }
-                        else {
-                            value['image_name'] = createPortfilioDto['image'];
-                        }
+                        cloudinary_upload_1.deleteCloudFile(value['image_id']).then((result) => {
+                            console.log('result :: ', result);
+                        }).catch(error => {
+                            console.log('error :: ', error);
+                        });
+                        value['image_name'] = createPortfilioDto['image_name'];
+                        value['image_id'] = createPortfilioDto['image_id'];
                     }
                 });
                 const updatedPortifilio = yield this.portifolioModel.findOneAndUpdate({ userId: decoded._id }, {

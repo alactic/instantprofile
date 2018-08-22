@@ -9,6 +9,7 @@ import {retrieveFromToken} from '../utils/retrieveFromToken';
 import * as cloudinary from 'cloudinary';
 import {async} from "rxjs/internal/scheduler/async";
 import {CloudinaryuploadService} from "./cloudinaryupload.service";
+import {deleteCloudFile} from "../utils/cloudinary-upload";
 
 @Injectable()
 export class ServiceService {
@@ -62,10 +63,11 @@ export class ServiceService {
         } else {
             service.service.forEach((value, i) => {
                 if (i === index) {
-                    cloudinary.v2.uploader.destroy(value['image_id'],
-                        (error, result) => {
-                            console.log('result :: ', result, 'error :: ', error)
-                        });
+                    deleteCloudFile(value['image_id']).then((result) => {
+                        console.log('result :: ', result);
+                    }).catch(error => {
+                        console.log('error :: ', error);
+                    });
                     value['image_name'] = createServiceDto['image_name'];
                     value['image_id'] = createServiceDto['image_id'];
                 }

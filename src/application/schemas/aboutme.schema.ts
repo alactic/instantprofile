@@ -75,4 +75,10 @@ export const AboutMeSchema = new mongoose.Schema({
             type: String,
         },
     }],
+    image_name: {
+        type: String,
+    },
+    image_id: {
+        type: String,
+    },
 });

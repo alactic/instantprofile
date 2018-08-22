@@ -25,7 +25,7 @@ const common_1 = require("@nestjs/common");
 const mongoose_1 = require("mongoose");
 const retrieveFromToken_1 = require("../utils/retrieveFromToken");
 const constants_1 = require("../utils/constants");
-const fs = require("fs");
+const cloudinary_upload_1 = require("../utils/cloudinary-upload");
 let AboutmeService = class AboutmeService {
     constructor(aboutModel) {
         this.aboutModel = aboutModel;
@@ -84,13 +84,15 @@ let AboutmeService = class AboutmeService {
             createAboutmeDto['userId'] = decoded._id;
             const user = yield this.aboutModel.find({ userId: decoded._id });
             if (user && user.length > 0) {
-                const path = './src/public/uploads/' + user['profile_image'];
-                if (fs.existsSync(path)) {
-                    fs.unlinkSync('./src/public/uploads/' + user['profile_image']);
-                }
+                cloudinary_upload_1.deleteCloudFile(user['image_id']).then((result) => {
+                    console.log('result :: ', result);
+                }).catch(error => {
+                    console.log('error :: ', error);
+                });
                 const updatedUser = yield this.aboutModel.findOneAndUpdate({ userId: decoded._id }, {
                     $set: {
-                        'profile_image': createAboutmeDto['profile_image'],
+                        'image_name': createAboutmeDto['image_name'],
+                        'image_id': createAboutmeDto['image_id'],
                     },
                 }, { new: true });
                 return updatedUser;

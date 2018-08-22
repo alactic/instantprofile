@@ -18,6 +18,9 @@ exports.PortifolioSchema = new mongoose.Schema({
             image_name: {
                 type: String,
             },
+            image_id: {
+                type: String,
+            },
         }],
 });
 exports.CategorySchema = new mongoose.Schema({

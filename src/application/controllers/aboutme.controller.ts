@@ -11,6 +11,7 @@ import {UserService} from '../services/user.service';
 import * as path from 'path';
 import * as mime from 'mime';
 import * as fs from "fs";
+import {cloud} from "../utils/cloudinary-upload";
 
 @ApiUseTags('about')
 @Controller('about')
@@ -48,14 +49,14 @@ export class AboutmeController {
     @UseGuards(AuthGuard('jwt'))
     @UseInterceptors(FileInterceptor('files'))
     updateProfileImage(@UploadedFile() files, @Res() res, @Req() req, @Body() createAboutMeDto: CreateAboutMeDto) {
-        const name = Date.now() + '-' + files.originalname;
-        createAboutMeDto['profile_image'] = name;
-        const buff = new Buffer(files.buffer, 'base64');
-        fs.writeFileSync('./src/public/uploads/' + name, buff);
-        this.aboutmeService.updateProfileImage(createAboutMeDto, req.headers.authorization).then(response => {
-            res.send(response);
-        }).catch(error => {
-            res.status(400).send(error);
+        cloud(files.buffer).then((result) => {
+            createAboutMeDto['image_name'] = result['url'];
+            createAboutMeDto['image_id'] = result['public_id'];
+            this.aboutmeService.updateProfileImage(createAboutMeDto, req.headers.authorization).then(response => {
+                res.send(response);
+            }).catch(error => {
+                res.status(400).send(error);
+            });
         });
     }
 

@@ -2,6 +2,8 @@ import {Document} from 'mongoose';
 
 export interface Aboutme extends Document {
      profile_image: string;
+     image_name: string;
+     image_id: string;
      cv: string;
     readonly profession: string;
     readonly city: string;
