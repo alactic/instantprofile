@@ -85,9 +85,9 @@ let ServiceService = class ServiceService {
                         cloudinary.v2.uploader.destroy(value['image_id'], (error, result) => {
                             console.log('result :: ', result, 'error :: ', error);
                         });
+                        value['image_name'] = createServiceDto['image_name'];
+                        value['image_id'] = createServiceDto['image_id'];
                     }
-                    value['image_name'] = createServiceDto['image_name'];
-                    value['image_id'] = createServiceDto['image_id'];
                 });
                 const updatedUser = yield this.serviceModel.findOneAndUpdate({ userId: decoded._id }, {
                     $set: {

@@ -68,6 +68,9 @@ let PortifolioController = class PortifolioController {
                 if (response[0]) {
                     res.send(response[0]['portifolio']);
                 }
+                else {
+                    res.send(response);
+                }
             }).catch(error => {
                 res.status(400).send(error);
             });

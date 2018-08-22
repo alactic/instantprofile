@@ -18,39 +18,45 @@ const passport_1 = require("@nestjs/passport");
 const service_dto_1 = require("../dto/service.dto");
 const swagger_1 = require("@nestjs/swagger");
 const user_service_1 = require("../services/user.service");
-const cloudinary = require("cloudinary");
+const cloudinary_upload_1 = require("../utils/cloudinary-upload");
 let ServiceController = class ServiceController {
     constructor(serviceService, userservice) {
         this.serviceService = serviceService;
         this.userservice = userservice;
-        cloudinary.config({
-            cloud_name: 'softloft',
-            api_key: 314466682599661,
-            api_secret: 'o_fyN55i7DXY4lSt6a4QN2CpGH8',
-        });
     }
     createService(files, createServiceDto, res, req) {
+        console.log('files :: ', files);
         const servicedata = JSON.parse(createServiceDto['data']);
-        let index = 0;
-        files.forEach((file, i) => {
-            cloudinary.uploader.upload_stream((result) => {
-                index = index + 1;
-                servicedata.service[i]['image_name'] = result['url'];
-                servicedata.service[i]['image_id'] = result['public_id'];
-                if (index === files.length) {
-                    this.serviceService.create(servicedata, req.headers.authorization).then(response => {
-                        res.send(response);
-                    }).catch(error => {
-                        res.status(400).send(error);
-                    });
-                }
-            }).end(file.buffer);
-        });
+        if (servicedata.service.length === files.length) {
+            let index = 0;
+            files.forEach((file, i) => {
+                cloudinary_upload_1.cloud(file.buffer).then((result) => {
+                    index = index + 1;
+                    servicedata.service[i]['image_name'] = result['url'];
+                    servicedata.service[i]['image_id'] = result['public_id'];
+                    if (index === files.length) {
+                        this.serviceService.create(servicedata, req.headers.authorization).then(response => {
+                            res.send(response);
+                        }).catch(error => {
+                            res.status(400).send(error);
+                        });
+                    }
+                });
+            });
+        }
+        else {
+            res.status(400).send({ message: 'Error occur while uploading, please try again' });
+        }
     }
     getService(res, req) {
         this.userservice.findOneByUsername(req.headers.named).then(resp => {
             this.serviceService.getService(resp._id).then(response => {
-                res.send(response[0]['service']);
+                if (response[0]) {
+                    res.send(response[0]['service']);
+                }
+                else {
+                    res.send(response);
+                }
             }).catch(error => {
                 res.status(400).send(error);
             });
@@ -64,7 +70,7 @@ let ServiceController = class ServiceController {
         });
     }
     updateProfileImage(files, res, req, createServiceDto) {
-        cloudinary.uploader.upload_stream((result) => {
+        cloudinary_upload_1.cloud(files.buffer).then(result => {
             createServiceDto['image_name'] = result['url'];
             createServiceDto['image_id'] = result['public_id'];
             this.serviceService.updateImage(createServiceDto, req.headers.authorization, files.buffer).then(response => {
@@ -72,7 +78,7 @@ let ServiceController = class ServiceController {
             }).catch(error => {
                 res.status(400).send(error);
             });
-        }).end(files.buffer);
+        });
     }
 };
 __decorate([

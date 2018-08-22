@@ -14,8 +14,8 @@ import {CloudinaryuploadService} from "./application/services/cloudinaryupload.s
 
 @Module({
     imports: [
-         // MongooseModule.forRoot('mongodb://softloft:0gbunike@ds113122.mlab.com:13122/myprofile'),
-         MongooseModule.forRoot('mongodb://localhost/instantprofile'),
+         MongooseModule.forRoot('mongodb://softloft:0gbunike@ds113122.mlab.com:13122/myprofile'),
+         // MongooseModule.forRoot('mongodb://localhost/instantprofile'),
         UserModule,
         ServiceModule,
         AuthModule,
