@@ -108,6 +108,8 @@ let AuthService = class AuthService {
             return yield this.usersService.findUserByEmail(payload.email);
         });
     }
+    addAudit(record) {
+    }
 };
 AuthService = __decorate([
     common_1.Injectable(),

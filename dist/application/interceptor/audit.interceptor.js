@@ -5,20 +5,26 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
+const auth_service_1 = require("../services/auth.service");
 const operators_1 = require("rxjs/operators");
 let AuditInterceptor = class AuditInterceptor {
+    constructor(authservice) {
+        this.authservice = authservice;
+    }
     intercept(context, call$) {
-        const request = context.switchToHttp().getRequest();
-        const response = context.switchToHttp().getResponse();
-        console.log('Before response :: ', response['req']['route']);
-        const now = Date.now();
-        return call$.pipe(operators_1.tap(() => console.log(`After... ${Date.now() - now}ms`)));
+        return call$.pipe(operators_1.map(data => (this.addAudit(data))));
+    }
+    addAudit(record) {
     }
 };
 AuditInterceptor = __decorate([
-    common_1.Injectable()
+    common_1.Injectable(),
+    __metadata("design:paramtypes", [auth_service_1.AuthService])
 ], AuditInterceptor);
 exports.AuditInterceptor = AuditInterceptor;
 //# sourceMappingURL=audit.interceptor.js.map

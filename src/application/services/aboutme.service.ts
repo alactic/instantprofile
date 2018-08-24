@@ -4,7 +4,6 @@ import {retrieveFromToken} from '../utils/retrieveFromToken';
 import {Aboutme} from '../interfaces/aboutme.interface';
 import {CreateAboutMeDto, UpdateAboutMeDto} from '../dto/aboutme.dto';
 import {AboutModelName} from '../utils/constants';
-import * as fs from 'fs';
 import {deleteCloudFile} from "../utils/cloudinary-upload";
 
 @Injectable()

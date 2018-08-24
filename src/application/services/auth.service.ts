@@ -79,4 +79,8 @@ export class AuthService {
     async validateUser(payload: JwtPayload): Promise<any> {
         return await this.usersService.findUserByEmail(payload.email);
     }
+
+    addAudit(record: any) {
+        
+    }
 }

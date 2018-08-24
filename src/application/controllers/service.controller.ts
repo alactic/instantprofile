@@ -10,6 +10,7 @@ import {ApiUseTags} from '@nestjs/swagger';
 import {diskStorage, multer} from 'multer';
 import {UserService} from '../services/user.service';
 import {cloud} from '../utils/cloudinary-upload';
+import {AuditInterceptor} from "../interceptor/audit.interceptor";
 
 @ApiUseTags('service')
 @Controller('service')
@@ -45,9 +46,11 @@ export class ServiceController {
     }
 
     @Get()
+    @UseInterceptors(AuditInterceptor)
     getService(@Res() res, @Req() req) {
         this.userservice.findOneByUsername(req.headers.named).then(resp => {
             this.serviceService.getService(resp._id).then(response => {
+                // console.log('response from service :: ', response);
                 if (response[0]) {
                     res.send(response[0]['service']);
                 } else {

@@ -17,7 +17,10 @@ AuthModule = __decorate([
     common_1.Module({
         imports: [common_1.forwardRef(() => user_module_1.UserModule)],
         exports: [auth_service_1.AuthService],
-        providers: [auth_service_1.AuthService, jwt_strategy_1.JwtStrategy],
+        providers: [
+            auth_service_1.AuthService,
+            jwt_strategy_1.JwtStrategy
+        ],
         controllers: [auth_controller_1.AuthController],
     })
 ], AuthModule);

@@ -19,6 +19,7 @@ const service_dto_1 = require("../dto/service.dto");
 const swagger_1 = require("@nestjs/swagger");
 const user_service_1 = require("../services/user.service");
 const cloudinary_upload_1 = require("../utils/cloudinary-upload");
+const audit_interceptor_1 = require("../interceptor/audit.interceptor");
 let ServiceController = class ServiceController {
     constructor(serviceService, userservice) {
         this.serviceService = serviceService;
@@ -91,6 +92,7 @@ __decorate([
 ], ServiceController.prototype, "createService", null);
 __decorate([
     common_1.Get(),
+    common_1.UseInterceptors(audit_interceptor_1.AuditInterceptor),
     __param(0, common_1.Res()), __param(1, common_1.Req()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),

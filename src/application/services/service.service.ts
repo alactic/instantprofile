@@ -3,12 +3,9 @@ import {ServiceModelName} from '../utils/constants';
 import {Model} from 'mongoose';
 import {CreateServiceDto} from '../dto/service.dto';
 import {Service} from '../interfaces/service.interface';
-import * as fs from 'fs';
 import {retrieveFromToken} from '../utils/retrieveFromToken';
 
 import * as cloudinary from 'cloudinary';
-import {async} from "rxjs/internal/scheduler/async";
-import {CloudinaryuploadService} from "./cloudinaryupload.service";
 import {deleteCloudFile} from "../utils/cloudinary-upload";
 
 @Injectable()

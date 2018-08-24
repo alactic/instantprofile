@@ -9,7 +9,6 @@ import {AboutmeService} from '../services/aboutme.service';
 import {AuthGuard} from '@nestjs/passport';
 import {UserService} from '../services/user.service';
 import * as path from 'path';
-import * as mime from 'mime';
 import * as fs from "fs";
 import {cloud} from "../utils/cloudinary-upload";
 

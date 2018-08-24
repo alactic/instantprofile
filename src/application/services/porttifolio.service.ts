@@ -1,9 +1,6 @@
 import {HttpException, HttpStatus, Inject, Injectable} from '@nestjs/common';
 import {CategoryModelName, PortifolioModelName, ServiceModelName} from '../utils/constants';
 import {Model} from 'mongoose';
-import * as fs from 'fs';
-import {CreateServiceDto} from '../dto/service.dto';
-import {Service} from '../interfaces/service.interface';
 import {retrieveFromToken} from '../utils/retrieveFromToken';
 import {Category, Portifolio} from '../interfaces/portifolio.interface';
 import {AddCategory, CreatePortifolioDto} from '../dto/portifolio.dto';

@@ -3,13 +3,9 @@ import {
     UploadedFiles, UseGuards,
     UseInterceptors
 } from '@nestjs/common';
-import {ServiceService} from '../services/service.service';
 import {AuthGuard} from '@nestjs/passport';
-import {CreateServiceDto} from '../dto/service.dto';
 import {ApiUseTags} from '@nestjs/swagger';
 import {diskStorage, multer} from 'multer';
-import * as path from 'path';
-import * as fs from 'fs';
 import {PortifolioService} from '../services/porttifolio.service';
 import {AddCategory, CreatePortifolioDto} from "../dto/portifolio.dto";
 import {UserService} from "../services/user.service";
@@ -19,7 +15,7 @@ import {cloud} from "../utils/cloudinary-upload";
 @Controller('portifolio')
 export class PortifolioController {
     constructor(private readonly porttifolioService: PortifolioService,
-                private readonly userservice: UserService,) {
+                private readonly userservice: UserService) {
     }
 
     @Post()

@@ -17,7 +17,6 @@ const service_module_1 = require("./application/modules/service.module");
 const client_module_1 = require("./application/modules/client.module");
 const Portifolio_module_1 = require("./application/modules/Portifolio.module");
 const contact_module_1 = require("./application/modules/contact.module");
-const cloudinaryupload_service_1 = require("./application/services/cloudinaryupload.service");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -32,9 +31,11 @@ AppModule = __decorate([
             Portifolio_module_1.PortifolioModule,
             client_module_1.ClientModule
         ],
-        exports: [cloudinaryupload_service_1.CloudinaryuploadService],
+        exports: [],
         controllers: [app_controller_1.AppController],
-        providers: [app_service_1.AppService, cloudinaryupload_service_1.CloudinaryuploadService],
+        providers: [
+            app_service_1.AppService
+        ],
     })
 ], AppModule);
 exports.AppModule = AppModule;
